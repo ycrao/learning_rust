@@ -1,6 +1,8 @@
 # learning rust
 
->	[Rust](https://www.rust-lang.org/zh-CN/) 学习笔记及示例代码，主要是对 [Rust 程序设计语言](https://kaisery.gitbooks.io/rust-book-chinese/content/) [（第一版） 简体中文版] 教程的学习进行笔记摘要。笔者所运行的环境为 `macOS` ，文档及示例代码如果不做特殊说明均在此环境描述或运行。
+>	[Rust](https://www.rust-lang.org/zh-CN/) 学习笔记及示例代码，主要是对 [《Rust 程序设计语言》](https://kaisery.gitbooks.io/rust-book-chinese/content/) *（第一版） 简体中文版* 教程进行学习笔记摘要。笔者所运行的环境为 `macOS` ，文档及示例代码如果不做特殊说明均在此环境描述或运行。
+
+>	其它优秀资源：[A Gentle Introduction To Rust](https://stevedonovan.github.io/rust-gentle-intro/readme.html) (英文原版)。
 
 ## 简介
 
@@ -66,3 +68,4 @@ cargo build --release
 # 基于 `Cargo` 开始一个新项目
 cargo new hello_world --bin
 ```
+
