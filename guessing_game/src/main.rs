@@ -26,7 +26,7 @@ fn main() {
         let guess: u32 = guess.trim().parse()
             .expect("Please type a number!");
         */
-        //
+        // 异常处理
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
             Err(_) => continue,
@@ -44,7 +44,5 @@ fn main() {
             }
         }
     }
-
-
 
 }
