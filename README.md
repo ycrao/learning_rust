@@ -122,4 +122,59 @@ fn main() {
 
 ### 4.2 函数
 
-... 待续
+```rust
+# main入口函数
+fn main() {
+}
+# 自定义函数
+fn foo() {
+}
+# 携带参数
+fn print_number(x: i32) {
+    println!("x is: {}", x);
+}
+# 箭头 限定返回类型
+fn add_one(x: i32) -> i32 {
+    x + 1
+}
+```
+
+#### 发散函数
+
+Rust有些特殊的语法叫“发散函数”，这些函数并不返回：
+
+```rust
+fn diverges() -> ! {
+    panic!("This function never returns!");
+}
+```
+
+`panic!` 是一个宏，类似我们已经见过的 `println!()` 。与 `println!()` 不同的是，`panic!()` 导致当前的执行线程崩溃并返回指定的信息。因为这个函数会崩溃，所以它不会返回，所以它拥有一个类型!，它代表“发散”。
+
+
+如果你想要更多信息，你可以设定 `RUST_BACKTRACE` 环境变量来获取 `backtrace` ：
+
+```shell
+RUST_BACKTRACE=0 ./diverges
+RUST_BACKTRACE=1 cargo run
+```
+
+发散函数可以被用作任何类型。
+
+#### 函数指针
+
+
+我们也可以创建指向函数的变量绑定：`f` 是一个指向一个获取 `i32` 作为参数并返回 `i32` 的函数的变量绑定。
+
+```rust
+fn plus_one(i: i32) -> i32 {
+    i + 1
+}
+
+// without type inference
+let f: fn(i32) -> i32 = plus_one;
+
+// with type inference
+let f = plus_one;
+let six = f(5);
+```
