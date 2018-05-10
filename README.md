@@ -123,17 +123,20 @@ fn main() {
 ### 4.2 函数
 
 ```rust
-# main入口函数
+//# main入口函数
 fn main() {
 }
-# 自定义函数
+
+//# 自定义函数
 fn foo() {
 }
-# 携带参数
+
+//# 携带参数
 fn print_number(x: i32) {
     println!("x is: {}", x);
 }
-# 箭头 限定返回类型
+
+//# 箭头 限定返回类型
 fn add_one(x: i32) -> i32 {
     x + 1
 }
@@ -178,3 +181,262 @@ let f: fn(i32) -> i32 = plus_one;
 let f = plus_one;
 let six = f(5);
 ```
+
+### 4.3 原生类型
+
+```rust
+//# 布尔型
+let x = true;
+let y: bool = false;
+
+//# char
+// 不像其它语言，这意味着 Rust 的 char 并不是 1 个字节，而是 4 个。
+let x = 'x';
+let two_hearts = '💕';  # unicode
+```
+
+#### 数字类型
+
+Rust有一些分类的大量数字类型：有符号和无符号，定长和变长，浮点和整型。
+这些类型包含两部分：分类，和大小。例如，u16是一个拥有 16 位大小的无符号类型。更多字节让你拥有更大的数字。
+
+```rust
+let x = 42; // `x` has type `i32`.
+
+let y = 1.0; // `y` has type `f64`.
+```
+
+这里有一个不同数字类型的列表，以及它们在标准库中的文档：
+
+* [i8](http://doc.rust-lang.org/nightly/std/primitive.i8.html)
+* [i16](http://doc.rust-lang.org/nightly/std/primitive.i16.html)
+* [i32](http://doc.rust-lang.org/nightly/std/primitive.i32.html)
+* [i64](http://doc.rust-lang.org/nightly/std/primitive.i64.html)
+* [u8](http://doc.rust-lang.org/nightly/std/primitive.u8.html)
+* [u16](http://doc.rust-lang.org/nightly/std/primitive.u16.html)
+* [u32](http://doc.rust-lang.org/nightly/std/primitive.u32.html)
+* [u64](http://doc.rust-lang.org/nightly/std/primitive.u64.html)
+* [isize](http://doc.rust-lang.org/nightly/std/primitive.isize.html)
+* [usize](http://doc.rust-lang.org/nightly/std/primitive.usize.html)
+* [f32](http://doc.rust-lang.org/nightly/std/primitive.f32.html)
+* [f64](http://doc.rust-lang.org/nightly/std/primitive.f64.html)
+
+#### 数组
+
+```rust
+let a = [1, 2, 3]; // a: [i32; 3]
+let mut m = [1, 2, 3]; // m: [i32; 3]
+```
+
+数组的类型是[T; N]。我们会在泛型部分的时候讨论这个T标记。N是一个编译时常量，代表数组的长度。
+
+有一个可以将数组中每一个元素初始化为相同值的简写。在这个例子中，a的每个元素都被初始化为0：
+
+```rust
+let a = [0; 20]; // a: [i32; 20]
+```
+
+你可以用 `a.len()` 来获取数组a的元素数量：
+
+```rust
+let a = [1, 2, 3];
+
+println!("a has {} elements", a.len());
+```
+
+你可以用下标（subscript notation）来访问特定的元素：
+
+```rust
+let names = ["Graydon", "Brian", "Niko"]; // names: [&str; 3]
+
+println!("The second name is: {}", names[1]);
+```
+
+就跟大部分编程语言一个样，下标从0开始，所以第一个元素是 `names[0]` ，第二个是 `names[1]` 。
+
+
+#### 切片(Slices)
+
+>   一个切片（slice）是一个数组的引用（或者“视图”）。它有利于安全，有效的访问数组的一部分而不用进行拷贝。比如，你可能只想要引用读入到内存的文件中的一行。原理上，片段并不是直接创建的，而是引用一个已经存在的变量。片段有预定义的长度，可以是可变也可以是不可变的。
+
+>   在底层，slice 代表一个指向数据开始的指针和一个长度。
+
+```rust
+let a = [0, 1, 2, 3, 4];
+let complete = &a[..]; // A slice containing all of the elements in `a`.
+let middle = &a[1..4]; // A slice of `a`: only the elements `1`, `2`, and `3`.
+```
+
+#### str
+
+>   Rust 的 `str` 类型是最原始的字符串类型。作为一个不定长类型，它本身并不是非常有用，不过当它用在引用后是就有用了，例如 `&str` 。如你所见，我们到时候再讲。
+
+#### 元组(Tuples)
+
+```rust
+let x = (1, "hello");
+
+//# 注明数据类型
+let x: (i32, &str) = (1, "hello");
+
+//# 元组赋值
+let mut x = (1, 2); // x: (i32, i32)
+let y = (2, 3); // y: (i32, i32)
+
+x = y;
+
+# 解构let
+let (x, y, z) = (1, 2, 3);
+
+println!("x is {}", x);
+
+//# 消除一个单元素元组和一个括号中的值的歧义
+(0,); // single-element tuple
+(0); // zero in parentheses
+
+//# 通过索引语法访问一个元组的字段
+let tuple = (1, 2, 3);
+
+// 就像数组索引，它从0开始，不过也不像数组索引，它使用.，而不是[]。
+let x = tuple.0;
+let y = tuple.1;
+let z = tuple.2;
+
+println!("x is {}", x);
+```
+
+#### 函数
+
+函数也是一个类型！它们看起来像这样：
+
+```rust
+fn foo(x: i32) -> i32 { x }
+
+let x: fn(i32) -> i32 = foo;
+```
+
+在这个例子中，`x` 是一个“函数指针”，指向一个获取一个 `i32` 参数并返回一个 `i32` 值的函数。
+
+### 4.4 注释
+
+```rust
+//# 行注释（line comments）
+
+// Line comments are anything after ‘//’ and extend to the end of the line.
+
+let x = 5; // This is also a line comment.
+
+//# 文档注释（doc comments），内建 Markdown 标记支持
+
+/// Adds one to the number given.
+///
+/// # Examples
+///
+/// ```
+/// let five = 5;
+///
+/// assert_eq!(6, add_one(5));
+/// # fn add_one(x: i32) -> i32 {
+/// #     x + 1
+/// # }
+/// ```
+fn add_one(x: i32) -> i32 {
+    x + 1
+}
+```
+
+### 4.5 if语句
+
+略去不提。
+
+```rust
+let x = 5;
+
+if x == 5 {
+    println!("x is five!");
+}
+
+if x == 5 {
+    println!("x is five!");
+} else if x == 6 {
+    println!("x is six!");
+} else {
+    println!("x is not five or six :(");
+}
+
+let y = if x == 5 {
+    10
+} else {
+    15
+}; // y: i32
+
+let y = if x == 5 { 10 } else { 15 }; // y: i32
+```
+
+### 4.6 循环
+
+```rust
+//# loop
+loop {
+    println!("Loop forever!");
+}
+
+//# while
+let mut x = 5; // mut x: i32
+let mut done = false; // mut done: bool
+
+while !done {
+    x += x - 3;
+
+    println!("{}", x);
+
+    if x % 5 == 0 {
+        done = true;
+    }
+}
+
+//# for
+for x in 0..10 {  // 范围 0 <= x <10
+    println!("{}", x); // x: i32
+}
+for (index, value) in (5..10).enumerate() {
+    println!("index = {} and value = {}", index, value);
+}
+
+let lines = "hello\nworld".lines();
+
+for (linenumber, line) in lines.enumerate() {
+    println!("{}: {}", linenumber, line);
+}
+
+//# break 提前退出循环
+let mut x = 5;
+
+loop {
+    x += x - 3;
+
+    println!("{}", x);
+
+    if x % 5 == 0 { break; }
+}
+
+//# continue 不退出循环，直接进行下一次迭代
+for x in 0..10 {
+    if x % 2 == 0 { continue; }
+
+    println!("{}", x);
+}
+
+//# 循环标签
+'outer: for x in 0..10 {
+    'inner: for y in 0..10 {
+        if x % 2 == 0 { continue 'outer; } // Continues the loop over `x`.
+        if y % 2 == 0 { continue 'inner; } // Continues the loop over `y`.
+        println!("x: {}, y: {}", x, y);
+    }
+}
+```
+
+### 4.7 Vectors
+
+待续
