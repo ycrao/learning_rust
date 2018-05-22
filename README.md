@@ -439,4 +439,51 @@ for x in 0..10 {
 
 ### 4.7 Vectors
 
-待续
+“Vector”是一个动态或“可增长”的数组，被实现为标准库类型 `Vec<T>`（其中<T>是一个泛型语句）。`vector` 总是在堆上分配数据。`vector` 与切片就像 `String` 与 `&str` 一样。
+
+```rust
+let v = vec![1, 2, 3, 4, 5];  // v: Vec<i32>
+let v = vec![0; 10];  // ten zeros
+
+let v = vec![1, 2, 3, 4, 5];
+// vector 特定索引的值，使用[]
+println!("The third element of v is {}", v[2]);
+
+
+let v = vec![1, 2, 3, 4, 5];
+
+let i: usize = 0;
+let j: i32 = 0;
+
+// Works:
+v[i];
+
+// Doesn’t:
+v[j];
+
+//# 越界访问
+let v = vec![1, 2, 3];
+println!("Item 7 is {}", v[7]);
+
+
+let v = vec![1, 2, 3];
+match v.get(7) {
+    Some(x) => println!("Item 7 is {}", x),
+    None => println!("Sorry, this vector is too short.")
+}
+
+//# 迭代
+let mut v = vec![1, 2, 3, 4, 5];
+
+for i in &v {
+    println!("A reference to {}", i);
+}
+
+for i in &mut v {
+    println!("A mutable reference to {}", i);
+}
+    // 你不能在使用 vector 的所有权遍历之后再次遍历它。你可以使用它的引用多次遍历 vector。
+for i in v {
+    println!("Take ownership of the vector and its element {}", i);
+}
+```
